@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center">
+    <div class="jumbotron">
+        <h1>Sveiki, išsirinkite specialistą.</h1>
+        <select id="specialistas" class="form-control" required>
+            <option name="kardiologas">Kardiologas</option>
+            <option name="terapeutas">Terapeutas</option>
+            <option name="endokrinologas">Endokrinologas</option>
+        </select>
+        <br>
+
+        <button class="btn btn-primary" id="patvirtinimas">Patvirtinti</button>
+        <hr>
+        <p id="text"></p>
+        <hr>
+        <button class="btn btn-secondary" id="ikrovimas">Įkelti klientus</button>
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+    var kardiologas = [];
+    var terapeutas = [];
+    var endokrinologas = [];
+    var sarasas = [];
+    var aptarnauti = [];
+
+    $("#ikrovimas").click(function(){
+
+        var link = "zmones.json";
+        $.getJSON( link, {
+
+        })
+            //musu json duomenys pavirto i data kintamaji
+            .done(function(data){
+
+                data.forEach(myFunction);
+
+                //irasau data i localStorage, data paverciu i teksta
+                localStorage.setItem('kardiologas', JSON.stringify(kardiologas));
+                localStorage.setItem('terapeutas', JSON.stringify(terapeutas));
+                localStorage.setItem('endokrinologas', JSON.stringify(endokrinologas));
+                localStorage.setItem('aptarnauti', JSON.stringify(aptarnauti));
+
+                localStorage.setItem('kardiologoLaikas', '[]');
+            })
+            .fail(function() {
+                $("#text").html("<b>Nepavyko nustatyti lankytojų duomenų</b>.");
+            });
+
+    });
+    function myFunction(item) {
+        if(item.specialistas == 'kardiologas'){
+            kardiologas.push(item);
+        }else if (item.specialistas == 'terapeutas'){
+            terapeutas.push(item);
+        } else {
+            endokrinologas.push(item);
+        }
+    }
+    //kai paspaudziu mygtuka patvirtinti
+    $("#patvirtinimas").click(function () {
+
+        //tikrinu koki varijanta pasirinkau
+        var specialistas = $('option:selected').attr("name");
+
+        if( specialistas == 'kardiologas'){
+            sarasas = JSON.parse(localStorage.getItem("kardiologas"));
+        }else if (specialistas == 'endokrinologas'){
+            sarasas = JSON.parse(localStorage.getItem("endokrinologas"));
+        } else if(specialistas == 'terapeutas'){
+            sarasas = JSON.parse(localStorage.getItem("terapeutas"));
+        } else{
+            alert('Neatpažintas specialistas!');
+        }
+
+        //is localStorage pasiimu duomenis is sarasas ir ji paverciu i masyva sarasas
+       // var sarasas = JSON.parse(localStorage.getItem("sarasas"));
+
+        //pridedame nauja irasa i masyva
+        sarasas.push({index: sarasas.length, specialistas: specialistas});
+
+        //console.log(sarasas);
+
+        //irasyti pakeitimus i localStorage, masyva sarasas verciu vel i teksta
+        localStorage.setItem('sarasas', JSON.stringify(sarasas));
+
+        //tekstas kai sekmingai uzregistruotas
+        $("#text").html("<b>Užregistruota sėkmingai.</b><br>Tavo eilės nr.: "+sarasas.length);
+
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center">
+    <div class="jumbotron">
+        <h1>Sveiki, įrašyk savo eilės nr.</h1>
+        <input id="nr" type="number" class="form-control" required>
+
+        <br>
+
+        <button class="btn btn-primary" id="patvirtinimas">Patvirtinti</button>
+        <hr>
+        <p id="text"></p>
+
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+
+    var kardiologoLaikas = JSON.parse(localStorage.getItem("kardiologoLaikas"));
+    var laukelioNr = $('#nr').val();
+
+    var kardiologas = JSON.parse(localStorage.getItem("kardiologas"));
+    var terapeutas = JSON.parse(localStorage.getItem("terapeutas"));
+    var endokrinologas = JSON.parse(localStorage.getItem("endokrinologas"));
+
+    $("#patvirtinimas").click(function(){
+
+        var i=0;
+
+        while (laukelioNr != kardiologas[i].index) {
+
+            if (kardiologas.length > i) {
+                i++;
+            }else if(kardiologas.length <= i){
+                break;
+            }
+            else {
+
+                while (laukelioNr != endokrinologas[i].index) {
+
+                    if (endokrinologas.length > i) {
+                        i++;
+                    } else {
+
+                        while (laukelioNr != terapeutas[i].index) {
+
+                            if (terapeutas.length > i) {
+                                i++;
+                            } else {
+                                alert('Nerastas toks skaicius!')
+                            }
+
+                            if (laukelioNr == terapeutas[i].index) {
+                                paskaiciuoti(i, terapeutas[i].specialistas);
+                            }
+                        }
+
+                    }
+                    if (laukelioNr == endokrinologas[i].index) {
+                        paskaiciuoti(i, endokrinologas[i].specialistas);
+                    }
+                }
+                break;
+            }
+            if (laukelioNr == kardiologas[i].index) {
+                paskaiciuoti(i, kardiologas[i].specialistas);
+            }
+        }
+
+
+
+
+
+        if(specialistas == kardiologas){
+
+        }else if(1){
+
+        }else if(1){
+
+        }
+        kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length;
+
+    });
+
+    function paskaiciuoti(nr, specialistas) {
+        alert(nr+' '+specialistas);
+    }
+</script>
+</body>
+</html>

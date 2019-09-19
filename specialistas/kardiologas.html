@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center">
+    <div class="jumbotron">
+        <h1>Kardiologo puslapis</h1><hr>
+        <b>Aptarnaujamas klientas nr.: <span id="klientas"></span>.</b>
+        <br><br>
+        <button class="btn btn-primary" id="baigta">Baigti aptarnavimą, kviesti sekantį</button>
+
+        <p id="text"></p>
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+    localStorage.setItem('kardiologoLaikas', '[]');
+    var kardiologoLaikas = JSON.parse(localStorage.getItem("kardiologoLaikas"));
+    var sarasas = JSON.parse(localStorage.getItem("kardiologas"));
+    var aptarnauti = JSON.parse(localStorage.getItem("aptarnauti"));
+    var laikas = 0;
+    var lastClicked = 0;
+    $( document ).ready(function() {
+
+        // console.log(sarasas[0]);
+        $("#klientas").html(sarasas[0].index);
+        // $("#koksSpecialistas").html(sarasas[0].specialistas);
+
+        lastClicked = (new Date()).getTime();
+
+    });
+    $("#baigta").click(function(){
+
+        aptarnauti.push(sarasas[0].index);
+        localStorage.setItem('aptarnauti', JSON.stringify(aptarnauti));
+
+        sarasas.shift();
+        $("#klientas").html(sarasas[0].index);
+        $("#koksSpecialistas").html(sarasas[0].specialistas);
+
+        localStorage.setItem('kardiologas', JSON.stringify(sarasas));
+
+        laikas = onClickCheck();
+
+        console.log(laikas);
+
+        kardiologoLaikas.push(laikas);
+
+        localStorage.setItem('kardiologoLaikas', JSON.stringify(kardiologoLaikas));
+
+    });
+
+
+
+    function onClickCheck() {
+        var timeNow = (new Date()).getTime();
+
+        // if (timeNow > (lastClicked + 5000)) {
+        //     // Execute the link action
+        // }
+        // else {
+        //     alert('Please wait at least 5 seconds between clicks!');
+        // }
+
+        return timeNow - lastClicked;
+
+        lastClicked = timeNow;
+    }
+
+
+
+</script>
+</body>
+</html>

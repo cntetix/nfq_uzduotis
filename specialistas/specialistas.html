@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container text-center">
+    <div class="jumbotron">
+        <h1>Dabar aptarnaujamas klientas nr: <span id="klientas"></span>.</h1>
+        <p>Klientas pasirinko specialistą: <span id="koksSpecialistas"></span></p>
+
+        <button class="btn btn-primary" id="baigta">Baigti aptarnavimą, kviesti sekantį</button>
+        <hr>
+        <p id="text"></p>
+    </div>
+</div>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+
+    var sarasas = JSON.parse(localStorage.getItem("sarasas"));
+    $( document ).ready(function() {
+
+
+
+        // console.log(sarasas[0]);
+        $("#klientas").html(sarasas[0].index);
+        $("#koksSpecialistas").html(sarasas[0].specialistas);
+
+    });
+    $("#baigta").click(function(){
+
+        sarasas.shift();
+        $("#klientas").html(sarasas[0].index);
+        $("#koksSpecialistas").html(sarasas[0].specialistas);
+
+        localStorage.setItem('sarasas', JSON.stringify(sarasas));
+
+        });
+    //     //musu json duomenys pavirto i data kintamaji
+    //         .done(function(data){
+    //             //irasau data i localStorage, data paverciu i teksta
+    //             localStorage.setItem('sarasas', JSON.stringify(data));
+    //         })
+    //         .fail(function() {
+    //             $("#text").html("<b>Nepavyko nustatyti lankytojų duomenų</b>.");
+    //         });
+    //
+    // });
+
+    //kai paspaudziu mygtuka patvirtinti
+    $("#patvirtinimas").click(function () {
+
+        //tikrinu koki varijanta pasirinkau
+        var specialistas = $('option:selected').attr("name");
+
+        //is localStorage pasiimu duomenis is sarasas ir ji paverciu i masyva sarasas
+        var sarasas = JSON.parse(localStorage.getItem("sarasas"));
+
+        //pridedame nauja irasa i masyva
+        sarasas.push({index: sarasas.length, specialistas: specialistas});
+
+        //console.log(sarasas);
+
+        //irasyti pakeitimus i localStorage, masyva sarasas verciu vel i teksta
+        localStorage.setItem('sarasas', JSON.stringify(sarasas));
+
+        //tekstas kai sekmingai uzregistruotas
+        $("#text").html("<b>Užregistruota sėkmingai</b>.");
+
+    })
+</script>
+</body>
+</html>

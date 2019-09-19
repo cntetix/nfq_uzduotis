@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<table>
+    <tr class="pirmas">
+        <td><h3>Kardiologas aptarnauja:</h3><h1 id="k-nr">...</h1></td>
+        <td><h3>Terapeutas aptarnauja:</h3><h1 id="t-nr">...</h1></td>
+        <td><h3>Endokrinologas aptarnauja:</h3><h1 id="e-nr">...</h1></td>
+    </tr>
+    <tr>
+        <td><h3>Sekantis eis:</h3><h1 id="ksk-nr">...</h1><h5>liko laukti: <span id="kliko"></span></h5></td>
+        <td><h3>Sekantis eis:</h3><h1 id="tsk-nr">...</h1><h5>liko laukti: <span id="kliko1"></span></h5></td>
+        <td><h3>Sekantis eis:</h3><h1 id="esk-nr">...</h1><h5>liko laukti: <span id="kliko2"></span></h5></td>
+    </tr>
+</table>
+<style>
+
+    table{
+        width: 100%;
+        border: 1px solid black;
+        height: 100vh;
+    }
+    .pirmas{
+        background-color: tomato;
+    }
+    td{
+        border: 1px solid black;
+        text-align: center;
+    }
+</style>
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous"></script>
+<script>
+
+    var kardiologas = JSON.parse(localStorage.getItem("kardiologas"));
+    var terapeutas = JSON.parse(localStorage.getItem("terapeutas"));
+    var endokrinologas = JSON.parse(localStorage.getItem("endokrinologas"));
+    var kardiologoLaikas = JSON.parse(localStorage.getItem("kardiologoLaikas"));
+    var endokrinologoLaikas = JSON.parse(localStorage.getItem("endokrinologoLaikas"));
+    var terapeutoLaikas = JSON.parse(localStorage.getItem("terapeutoLaikas"));
+    $( document ).ready(function() {
+
+        // console.log(sarasas[0]);
+        $("#k-nr").html(kardiologas[0].index);
+        $("#t-nr").html(terapeutas[0].index);
+        $("#e-nr").html(endokrinologas[0].index);
+
+        $("#ksk-nr").html(kardiologas[1].index);
+        $("#tsk-nr").html(terapeutas[1].index);
+        $("#esk-nr").html(endokrinologas[1].index);
+
+        $('#kliko').html(millisToMinutesAndSecondsz(kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length));
+        $('#kliko1').html(millisToMinutesAndSecondsz(terapeutoLaikas.reduce((previous, current) => current += previous) / terapeutoLaikas.length));
+        $('#kliko2').html(millisToMinutesAndSecondsz(endokrinologoLaikas.reduce((previous, current) => current += previous) / endokrinologoLaikas.length));
+
+    });
+
+    function millisToMinutesAndSecondsz(millis) {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+    }
+
+    function refreshData()
+    {
+        x = 5;  // 5 Seconds
+
+        kardiologas = JSON.parse(localStorage.getItem("kardiologas"));
+        terapeutas = JSON.parse(localStorage.getItem("terapeutas"));
+        endokrinologas = JSON.parse(localStorage.getItem("endokrinologas"));
+
+        $("#k-nr").html(kardiologas[0].index);
+        $("#t-nr").html(terapeutas[0].index);
+        $("#e-nr").html(endokrinologas[0].index);
+
+        $("#ksk-nr").html(kardiologas[1].index);
+        $("#tsk-nr").html(terapeutas[1].index);
+        $("#esk-nr").html(endokrinologas[1].index);
+
+        setTimeout(refreshData, x*1000);
+    }
+
+    refreshData();
+</script>
+</body>
+</html>
+</body>
+</html>
