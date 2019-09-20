@@ -92,7 +92,16 @@
         //console.log(sarasas);
 
         //irasyti pakeitimus i localStorage, masyva sarasas verciu vel i teksta
-        localStorage.setItem('sarasas', JSON.stringify(sarasas));
+        if( specialistas == 'kardiologas'){
+            sarasas = localStorage.setItem("kardiologas", JSON.stringify(sarasas));
+        }else if (specialistas == 'endokrinologas'){
+            sarasas = localStorage.setItem("endokrinologas", JSON.stringify(sarasas));
+        } else if(specialistas == 'terapeutas'){
+            sarasas = localStorage.setItem("terapeutas", JSON.stringify(sarasas));
+        } else{
+            alert('ERROR: Nepavyko issaugoti narsykleje naujo patvirtinimo!');
+        }
+
 
         //tekstas kai sekmingai uzregistruotas
         $("#text").html("<b>Užregistruota sėkmingai.</b><br>Tavo eilės nr.: "+sarasas.length);
