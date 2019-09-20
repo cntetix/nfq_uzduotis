@@ -24,75 +24,156 @@
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous"></script>
 <script>
-
     var kardiologoLaikas = JSON.parse(localStorage.getItem("kardiologoLaikas"));
-    var laukelioNr = $('#nr').val();
-
+    var laukelioNr = -1;
     var kardiologas = JSON.parse(localStorage.getItem("kardiologas"));
     var terapeutas = JSON.parse(localStorage.getItem("terapeutas"));
     var endokrinologas = JSON.parse(localStorage.getItem("endokrinologas"));
+    var aptarnauti = JSON.parse(localStorage.getItem("aptarnauti"));
+    var endokrinologoLaikas = JSON.parse(localStorage.getItem("endokrinologoLaikas"));
+    var terapeutoLaikas = JSON.parse(localStorage.getItem("terapeutoLaikas"));
+    var i = 0;
 
     $("#patvirtinimas").click(function(){
 
-        var i=0;
-
-        while (laukelioNr != kardiologas[i].index) {
-
-            if (kardiologas.length > i) {
-                i++;
-            }else if(kardiologas.length <= i){
-                break;
-            }
-            else {
-
-                while (laukelioNr != endokrinologas[i].index) {
-
-                    if (endokrinologas.length > i) {
-                        i++;
-                    } else {
-
-                        while (laukelioNr != terapeutas[i].index) {
-
-                            if (terapeutas.length > i) {
-                                i++;
-                            } else {
-                                alert('Nerastas toks skaicius!')
-                            }
-
-                            if (laukelioNr == terapeutas[i].index) {
-                                paskaiciuoti(i, terapeutas[i].specialistas);
-                            }
-                        }
-
-                    }
-                    if (laukelioNr == endokrinologas[i].index) {
-                        paskaiciuoti(i, endokrinologas[i].specialistas);
-                    }
-                }
-                break;
-            }
-            if (laukelioNr == kardiologas[i].index) {
-                paskaiciuoti(i, kardiologas[i].specialistas);
-            }
-        }
+        laukelioNr = parseInt($('#nr').val());
+        atrask();
 
 
-
-
-
-        if(specialistas == kardiologas){
-
-        }else if(1){
-
-        }else if(1){
-
-        }
-        kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length;
+        //for()
+        // var i=0;
+        //
+        // while (laukelioNr != kardiologas[i].index) {
+        //
+        //     if (kardiologas.length > i) {
+        //         i++;
+        //     }else if(kardiologas.length <= i){
+        //         break;
+        //     }
+        //     else {
+        //
+        //         while (laukelioNr != endokrinologas[i].index) {
+        //
+        //             if (endokrinologas.length > i) {
+        //                 i++;
+        //             } else {
+        //
+        //                 while (laukelioNr != terapeutas[i].index) {
+        //
+        //                     if (terapeutas.length > i) {
+        //                         i++;
+        //                     } else {
+        //                         alert('Nerastas toks skaicius!')
+        //                     }
+        //
+        //                     if (laukelioNr == terapeutas[i].index) {
+        //                         paskaiciuoti(i, terapeutas[i].specialistas);
+        //                     }
+        //                 }
+        //
+        //             }
+        //             if (laukelioNr == endokrinologas[i].index) {
+        //                 paskaiciuoti(i, endokrinologas[i].specialistas);
+        //             }
+        //         }
+        //         break;
+        //     }
+        //     if (laukelioNr == kardiologas[i].index) {
+        //         paskaiciuoti(i, kardiologas[i].specialistas);
+        //     }
+        // }
+        //
+        //
+        //
+        //
+        //
+        // if(specialistas == kardiologas){
+        //
+        // }else if(1){
+        //
+        // }else if(1){
+        //
+        // }
+        // kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length;
 
     });
 
-    function paskaiciuoti(nr, specialistas) {
-        alert(nr+' '+specialistas);
+    function atrask() {
+        if(ieskomePasKardiologa()){
+            //alert('kardiologas');
+        }else if(ieskomePasEndokrinologa()){
+            //alert('endokrinologas');
+        }else if(ieskomePasTerapeuta()){
+            //alert('terapeutas');
+        }else if(ieskomePasAptarnauti()){
+            //alert('aptarnauti');
+        }else {
+            //alert('neradau');
+        }
+
+    }
+
+    function ieskomePasKardiologa() {
+        for(var i = 0; i< kardiologas.length; i++){
+            if(kardiologas[i].index == laukelioNr){
+                rezultatas(kardiologas[i].specialistas, i);
+                return true;
+            } else if (i >= kardiologas.length){
+                return false;
+            }
+        }
+
+    }
+
+    function ieskomePasEndokrinologa() {
+        for(i = 0; i< endokrinologas.length; i++){
+            if(endokrinologas[i].index == laukelioNr){
+                rezultatas(endokrinologas[i].specialistas, i);
+                return true;
+            } else if (i >= endokrinologas.length){
+                return false;
+            }
+        }
+    }
+
+    function ieskomePasTerapeuta() {
+        for(i = 0; i< terapeutas.length; i++){
+            if(terapeutas[i].index == laukelioNr){
+                rezultatas(terapeutas[i].specialistas, i);
+                return true;
+            } else if (i >= terapeutas.length){
+                return false;
+            }
+        }
+    }
+
+    function ieskomePasAptarnauti() {
+        if(aptarnauti.indexOf(laukelioNr) >= 0){
+            alert('tu jau buvai aptarnautas!');
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    function rezultatas(specialistas, sk) {
+        var liko;
+        if(specialistas == "kardiologas"){
+            liko = millisToMinutesAndSecondsz(sk * kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length);
+        }else if(specialistas == 'endokrinologas'){
+            liko = millisToMinutesAndSecondsz(sk * endokrinologoLaikas.reduce((previous, current) => current += previous) / endokrinologoLaikas.length);
+        }else if(specialistas == 'terapeutas'){
+            liko = millisToMinutesAndSecondsz(sk * terapeutoLaikas.reduce((previous, current) => current += previous) / terapeutoLaikas.length);
+        }else {
+            alert('ERROR: rezultatui formuoti paduodamas neatpazystamas specialistas!');
+        }
+                alert(specialistas+" : "+sk+" liko laukti "+liko);
+    }
+
+    function millisToMinutesAndSecondsz(millis) {
+        var minutes = Math.floor(millis / 60000);
+        var seconds = ((millis % 60000) / 1000).toFixed(0);
+        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
     }
 </script>
 </body>
