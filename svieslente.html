@@ -88,9 +88,16 @@
         endokrinologoLaikas = JSON.parse(localStorage.getItem("endokrinologoLaikas"));
         terapeutoLaikas = JSON.parse(localStorage.getItem("terapeutoLaikas"));
 
-        $('#kliko').html(millisToMinutesAndSecondsz(kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length));
-        $('#kliko1').html(millisToMinutesAndSecondsz(terapeutoLaikas.reduce((previous, current) => current += previous) / terapeutoLaikas.length));
-        $('#kliko2').html(millisToMinutesAndSecondsz(endokrinologoLaikas.reduce((previous, current) => current += previous) / endokrinologoLaikas.length));
+        if(kardiologoLaikas.length != 0){
+            $('#kliko').html(millisToMinutesAndSecondsz(kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length));
+        }
+        if(terapeutoLaikas.length !=0){
+            $('#kliko1').html(millisToMinutesAndSecondsz(terapeutoLaikas.reduce((previous, current) => current += previous) / terapeutoLaikas.length));
+
+        }
+        if(endokrinologoLaikas.length != 0){
+            $('#kliko2').html(millisToMinutesAndSecondsz(endokrinologoLaikas.reduce((previous, current) => current += previous) / endokrinologoLaikas.length));
+        }
 
         if (typeof(kardiologas[1]) != "undefined"){
             $("#ksk-nr").html(kardiologas[1].index);
