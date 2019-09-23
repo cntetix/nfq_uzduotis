@@ -63,9 +63,6 @@
         $("#tsk-nr").html(terapeutas[1].index);
         $("#esk-nr").html(endokrinologas[1].index);
 
-        $('#kliko').html(millisToMinutesAndSecondsz(kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length));
-        $('#kliko1').html(millisToMinutesAndSecondsz(terapeutoLaikas.reduce((previous, current) => current += previous) / terapeutoLaikas.length));
-        $('#kliko2').html(millisToMinutesAndSecondsz(endokrinologoLaikas.reduce((previous, current) => current += previous) / endokrinologoLaikas.length));
 
     });
 
@@ -77,7 +74,7 @@
 
     function refreshData()
     {
-        x = 5;  // 5 Seconds
+        x = 5;  // 5 Sekundes
 
         kardiologas = JSON.parse(localStorage.getItem("kardiologas"));
         terapeutas = JSON.parse(localStorage.getItem("terapeutas"));
@@ -87,9 +84,34 @@
         $("#t-nr").html(terapeutas[0].index);
         $("#e-nr").html(endokrinologas[0].index);
 
-        $("#ksk-nr").html(kardiologas[1].index);
-        $("#tsk-nr").html(terapeutas[1].index);
-        $("#esk-nr").html(endokrinologas[1].index);
+        kardiologoLaikas = JSON.parse(localStorage.getItem("kardiologoLaikas"));
+        endokrinologoLaikas = JSON.parse(localStorage.getItem("endokrinologoLaikas"));
+        terapeutoLaikas = JSON.parse(localStorage.getItem("terapeutoLaikas"));
+
+        $('#kliko').html(millisToMinutesAndSecondsz(kardiologoLaikas.reduce((previous, current) => current += previous) / kardiologoLaikas.length));
+        $('#kliko1').html(millisToMinutesAndSecondsz(terapeutoLaikas.reduce((previous, current) => current += previous) / terapeutoLaikas.length));
+        $('#kliko2').html(millisToMinutesAndSecondsz(endokrinologoLaikas.reduce((previous, current) => current += previous) / endokrinologoLaikas.length));
+
+        if (typeof(kardiologas[1]) != "undefined"){
+            $("#ksk-nr").html(kardiologas[1].index);
+        }else {
+            $("#ksk-nr").html('Eilės pabaiga');
+            $('#kliko').html('-');
+        }
+
+        if (typeof(terapeutas[1]) != "undefined"){
+            $("#tsk-nr").html(terapeutas[1].index);
+        }else {
+            $("#tsk-nr").html('Eilės pabaiga');
+            $('#kliko1').html('-');
+        }
+
+        if (typeof(endokrinologas[1]) != "undefined"){
+            $("#esk-nr").html(endokrinologas[1].index);
+        }else {
+            $("#esk-nr").html('Eilės pabaiga');
+            $('#kliko2').html('-');
+        }
 
         setTimeout(refreshData, x*1000);
     }

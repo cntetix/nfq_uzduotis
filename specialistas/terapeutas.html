@@ -58,7 +58,16 @@
 
     });
 
+    function refreshData()
+    {
+        x = 5;  // 5 Sekundes
 
+        sarasas = JSON.parse(localStorage.getItem("terapeutas"));
+
+        setTimeout(refreshData, x*1000);
+    }
+
+    refreshData();
 
     function onClickCheck() {
         var timeNow = (new Date()).getTime();
